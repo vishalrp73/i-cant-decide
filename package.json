@@ -1,24 +1,21 @@
 {
-  "name": "random-show",
+  "name": "random-show-ts",
   "version": "1.0.0",
   "description": "",
+  "main": "index.js",
   "type": "module",
-  "main": "picker.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/vishalrp73/i-cant-decide.git"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx tsc && cd ./dist && node index"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/vishalrp73/i-cant-decide/issues"
-  },
-  "homepage": "https://github.com/vishalrp73/i-cant-decide#readme",
   "devDependencies": {
-    "inquirer": "^9.1.4"
+    "@tsconfig/node16": "^1.0.3",
+    "@types/node": "^18.14.6",
+    "inquirer": "^9.1.4",
+    "@types/inquirer": "9.0.3",
+    "typescript": "^4.9.5"
   }
 }
