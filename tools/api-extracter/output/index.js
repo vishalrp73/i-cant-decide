@@ -1,0 +1,9 @@
+export { alwaysSunny } from './always-sunny.json';
+export { americanDad } from './american-dad.json'
+export { bobsBurgers } from './bobs-burgers.json';
+export { clevelandShow } from './cleveland-show.json';
+export { familyGuy } from './family-guy.json';
+export { futurama } from './futurama.json';
+export { kingOfTheHill } from './koth.json';
+export { scrubs } from './scrubs.json';
+export { simpsons } from './simpsons.json';

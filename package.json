@@ -1,0 +1,24 @@
+{
+  "name": "random-show",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "picker.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vishalrp73/i-cant-decide.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vishalrp73/i-cant-decide/issues"
+  },
+  "homepage": "https://github.com/vishalrp73/i-cant-decide#readme",
+  "devDependencies": {
+    "inquirer": "^9.1.4"
+  }
+}

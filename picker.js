@@ -1,31 +1,19 @@
-const { exec } = require('child_process');
-const alwaysSunny = require('./bad-files/always-sunny.json');
-const americanDad = require('./bad-files/american-dad.json');
-const bobsBurgers = require('./bad-files/bobs-burgers.json');
-const clevelandShow = require('./bad-files/cleveland-show.json');
-const familyGuy = require('./bad-files/family-guy.json');
-const futurama = require('./bad-files/futurama.json');
-const kingOfTheHill = require('./bad-files/koth.json');
-const scrubs = require('./bad-files/scrubs.json');
-const simpsons = require('./bad-files/simpsons.json');
+import { exec } from 'child_process';
+import alwaysSunny from './tools/api-extracter/output/always-sunny.json' assert { type: "json" };
+import americanDad from './tools/api-extracter/output/american-dad.json' assert { type: "json" };
+import bobsBurgers from './tools/api-extracter/output/bobs-burgers.json' assert { type: "json" };
+import clevelandShow from './tools/api-extracter/output/cleveland-show.json' assert { type: "json" };
+import familyGuy from './tools/api-extracter/output/family-guy.json' assert { type: "json" };
+import futurama from './tools/api-extracter/output/futurama.json' assert { type: "json" };
+import kingOfTheHill from './tools/api-extracter/output/koth.json' assert { type: "json" };
+import scrubs from './tools/api-extracter/output/scrubs.json' assert { type: "json" };
+import simpsons from './tools/api-extracter/output/simpsons.json' assert { type: "json" };
+
+import { getRandomNumber } from './tools/functions/getRandomNumber.js';
+import { randomiseEpisodes } from './tools/functions/randomiseEpisodes.js';
 
 const allShows = [alwaysSunny, americanDad, bobsBurgers, clevelandShow, familyGuy, futurama, kingOfTheHill, scrubs, simpsons];
 const allEpisodes = [];
-
-const randomiseEpisodes = (episodes) => {
-    for (let i = episodes.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        const temp = episodes[i];
-        episodes[i] = episodes[j];
-        episodes[j] = temp;
-      }
-      return episodes;
-};
-
-const getRandomNumber = (length) => {
-    const randomNumber = Math.random() * length;
-    return Math.floor(randomNumber);
-}
 
 allShows.forEach(show => allEpisodes.push(...show));
 const randomised = randomiseEpisodes(allEpisodes);
