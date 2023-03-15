@@ -6,7 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "npx tsc && cd ./dist && node index"
+    "build": "npx tsc",
+    "dev": "npx tsc && cd ./dist && node index",
+    "start": "cd ./dist && node index"
   },
   "keywords": [],
   "author": "",
