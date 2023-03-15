@@ -16,14 +16,14 @@ const fetchRandomEpisode = (shows) => {
     return null;
 };
 let stopLoop = false;
-const reRoll = (episode) => {
+const reRoll = (tvShows, episode) => {
     inquirer.prompt({
         type: 'confirm',
         message: 'Re-roll?',
         name: 'choice'
     }).then(answers => {
         if (answers.choice) {
-            prompt();
+            prompt(tvShows);
         }
         if (!answers.choice) {
             stopLoop = true;
@@ -32,55 +32,26 @@ const reRoll = (episode) => {
         }
     });
 };
-const prompt = () => {
-    inquirer.prompt({
-        type: 'checkbox',
-        message: "Select TV Shows",
-        name: 'tv_shows',
-        choices: [
-            new inquirer.Separator("--- TV Shows ---"),
-            { name: "American Dad" },
-            { name: "Bob's Burgers" },
-            { name: "The Cleveland Show" },
-            { name: "Family Guy" },
-            { name: "Futurama" },
-            { name: "It's Always Sunny in Philadelphia" },
-            { name: "King of the Hill" },
-            { name: "Scrubs" },
-            { name: "The Simpsons" },
-            { name: "Modern Family" },
-            { name: "8 Simple Rules" }
-        ]
-    }).then(answers => {
-        const tvShows = answers.tv_shows;
-        const episode = fetchRandomEpisode(tvShows);
-        if (episode === null) {
-            console.log('No episode found');
-            return;
-        }
-        console.log('Chosen Episode:', episode);
-        if (!stopLoop) {
-            reRoll(episode);
-        }
-        ;
-        if (stopLoop) {
-            const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
-            exec(command);
-        }
-    }).catch(error => {
-        if (error.isTtyError) {
-            console.log("Prompt couldn't be rendered in the current environment");
-        }
-        else {
-            console.error(error);
-        }
-    });
+const prompt = (tvShows) => {
+    const episode = fetchRandomEpisode(tvShows);
+    if (episode === null) {
+        console.log('No episode found');
+        return;
+    }
+    console.log('Chosen Episode:', episode);
+    if (!stopLoop) {
+        reRoll(tvShows, episode);
+    }
+    ;
+    if (stopLoop) {
+        const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
+        exec(command);
+    }
 };
 inquirer.prompt({
     type: 'checkbox',
     message: "Select TV Shows",
     name: 'tv_shows',
-    loop: true,
     choices: [
         new inquirer.Separator("--- TV Shows ---"),
         { name: "American Dad" },
@@ -104,7 +75,7 @@ inquirer.prompt({
         return;
     }
     if (!stopLoop) {
-        reRoll(episode);
+        reRoll(tvShows, episode);
     }
     ;
     if (stopLoop) {

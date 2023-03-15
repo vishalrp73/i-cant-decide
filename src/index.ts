@@ -23,7 +23,7 @@ const fetchRandomEpisode = (shows: string[]): Episode | null => {
 
 let stopLoop: boolean = false;
 
-const reRoll = (episode: Episode) => {
+const reRoll = (tvShows: string[], episode: Episode) => {
     inquirer.prompt({
         type: 'confirm',
         message: 'Re-roll?',
@@ -31,7 +31,7 @@ const reRoll = (episode: Episode) => {
     }).then(answers => {
 
         if (answers.choice) {
-            prompt();
+            prompt(tvShows);
         }
         
         if (!answers.choice) {
@@ -42,30 +42,8 @@ const reRoll = (episode: Episode) => {
     });
 };
 
-
-
-const prompt = () => {
-    inquirer.prompt({
-        type: 'checkbox',
-        message: "Select TV Shows",
-        name: 'tv_shows',
-        choices: [
-            new inquirer.Separator("--- TV Shows ---"),
-            { name: "American Dad" },
-            { name: "Bob's Burgers" },
-            { name: "The Cleveland Show" },
-            { name: "Family Guy" },
-            { name: "Futurama" },
-            { name: "It's Always Sunny in Philadelphia" },
-            { name: "King of the Hill" },
-            { name: "Scrubs" },
-            { name: "The Simpsons" },
-            { name: "Modern Family" },
-            { name: "8 Simple Rules" }
-        ]
-    }).then(answers => {
-        const tvShows = answers.tv_shows;
-        const episode = fetchRandomEpisode(tvShows);
+const prompt = (tvShows: string[]) => {
+    const episode = fetchRandomEpisode(tvShows);
         
         if (episode === null) {
             console.log('No episode found');
@@ -75,22 +53,13 @@ const prompt = () => {
         console.log('Chosen Episode:', episode);
 
         if (!stopLoop) {
-            reRoll(episode);
+            reRoll(tvShows, episode);
         };
     
         if (stopLoop) {
             const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
             exec(command);
         }
-
-    
-    }).catch(error => {
-        if (error.isTtyError) {
-            console.log("Prompt couldn't be rendered in the current environment")
-        } else {
-            console.error(error);
-        }
-    });
 }
 
 
@@ -99,7 +68,6 @@ inquirer.prompt({
     type: 'checkbox',
     message: "Select TV Shows",
     name: 'tv_shows',
-    loop: true,
     choices: [
         new inquirer.Separator("--- TV Shows ---"),
         { name: "American Dad" },
@@ -115,7 +83,7 @@ inquirer.prompt({
         { name: "8 Simple Rules" }
     ]
 }).then(answers => {
-    const tvShows = answers.tv_shows;
+    const tvShows: string[] = answers.tv_shows;
     const episode = fetchRandomEpisode(tvShows);
 
     console.log("Chosen Episode:", episode);
@@ -126,7 +94,7 @@ inquirer.prompt({
     }
 
     if (!stopLoop) {
-        reRoll(episode);
+        reRoll(tvShows, episode);
     };
 
     if (stopLoop) {

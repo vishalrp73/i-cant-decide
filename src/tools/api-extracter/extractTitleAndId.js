@@ -2,12 +2,13 @@
  * this file is JS because fuck the Disney API types
  */
 
-import extract from './extract.json';
+import extract from './extract.json' assert { type: "json"};
 import * as fs from 'fs';
 
 
 const files = {
     americanDad: "../../output/american-dad.json",
+    americanDadDos: "../../output/american-dad-dos.json",
     familyGuy: "../../output/family-guy.json",
     alwaysSunny: "../../output/always-sunny.json",
     bobsBurgers: "../../output/bobs-burgers.json",
@@ -20,7 +21,7 @@ const files = {
     noop: null,
 };
 
-const targetFile = files.noop;
+const targetFile = files.americanDadDos;
 
 const videos = extract.data.DmcEpisodes.videos;
 console.log('target file', targetFile);
@@ -29,7 +30,7 @@ let JSONfile = fs.readFileSync(targetFile, 'utf-8');
 let episodes = JSON.parse(JSONfile);
 
 videos.forEach(video => {
-    episodes.push({  title: video.internalTitle, contentId: video.contentId })
+    episodes.push({  internalTitle: video.internalTitle, title: video.text.title.full.program.default.content ,contentId: video.contentId })
 });
 
 JSONfile = JSON.stringify(episodes);
