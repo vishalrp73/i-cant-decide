@@ -1,7 +1,3 @@
-/**
- * @deprecated use main.ts file instead
- */
-
 import { exec } from "child_process";
 import inquirer from "inquirer";
 
@@ -12,7 +8,7 @@ import {
   fetchShows,
 } from "./tools/functions/index.js";
 
-const pickShow = (shows: string[]): string => {
+const pickShow = (shows: string[]) => {
   const randomNumber = getRandomNumber(0, shows.length - 1);
   return shows[randomNumber];
 };
@@ -30,50 +26,50 @@ const fetchRandomEpisode = (shows: string[]): Episode | null => {
   return null;
 };
 
-let stopLoop: boolean = false;
-
-const reRoll = (tvShows: string[], episode: Episode) => {
-  inquirer
-    .prompt({
-      type: "confirm",
-      message: "Re-roll?",
-      name: "choice",
-    })
-    .then((answers) => {
-      if (answers.choice) {
-        prompt(tvShows);
-      }
-
-      if (!answers.choice) {
-        stopLoop = true;
-        const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
-        exec(command);
-      }
-    });
-};
+let keepLoop: boolean = true;
 
 const prompt = (tvShows: string[]) => {
   const episode = fetchRandomEpisode(tvShows);
 
   if (episode === null) {
-    console.log("No episode found");
+    console.log("no episode found");
     return;
   }
 
-  console.log("Chosen Episode:", episode);
+  console.log("Chosen episode", episode);
 
-  if (!stopLoop) {
-    reRoll(tvShows, episode);
-  }
-
-  if (stopLoop) {
+  if (!keepLoop) {
     const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
     exec(command);
+    console.log("opening", episode.title);
+    return;
   }
+
+  rollDice(tvShows, episode);
 };
 
-inquirer
-  .prompt({
+const rollDice = async (tvShows: string[], episode: Episode) => {
+  const answers = await inquirer.prompt({
+    type: "confirm",
+    message: "Re-roll?",
+    name: "choice",
+  });
+
+  const { choice } = answers;
+
+  if (!choice) {
+    keepLoop = false;
+    const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
+    exec(command);
+    console.log("opening", episode.title);
+    return;
+  }
+
+  prompt(tvShows);
+};
+
+const main = async () => {
+  const answers = await inquirer.prompt({
     type: "checkbox",
     message: "Select TV Shows",
     name: "tv_shows",
@@ -91,31 +87,10 @@ inquirer
       { name: "Modern Family" },
       { name: "8 Simple Rules" },
     ],
-  })
-  .then((answers) => {
-    const tvShows: string[] = answers.tv_shows;
-    const episode = fetchRandomEpisode(tvShows);
-
-    console.log("Chosen Episode:", episode);
-
-    if (episode === null) {
-      console.log("No episode found");
-      return;
-    }
-
-    if (!stopLoop) {
-      reRoll(tvShows, episode);
-    }
-
-    if (stopLoop) {
-      const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
-      exec(command);
-    }
-  })
-  .catch((error) => {
-    if (error.isTtyError) {
-      console.log("Prompt couldn't be rendered in the current environment");
-    } else {
-      console.error(error);
-    }
   });
+
+  const { tv_shows } = answers;
+  prompt(tv_shows);
+};
+
+main();
