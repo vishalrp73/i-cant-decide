@@ -9,16 +9,16 @@ import scrubs from "./scrubs.json" assert { type: "json" };
 import simpsons from "./simpsons.json" assert { type: "json" };
 import modernFamily from "./modern-family.json" assert { type: "json" };
 import eightSimple from "./8-simple.json" assert { type: "json" };
-export const shows = {
-    alwaysSunny,
-    americanDad,
-    bobsBurgers,
-    clevelandShow,
-    familyGuy,
-    futurama,
-    kingOfTheHill,
-    scrubs,
-    simpsons,
-    modernFamily,
-    eightSimple,
-};
+export const shows = [
+    { name: "It's Always Sunny in Philadelphia", episodes: alwaysSunny },
+    { name: "American Dad", episodes: americanDad },
+    { name: "Bob's Burgers", episodes: bobsBurgers },
+    { name: "The Cleveland Show", episodes: clevelandShow },
+    { name: "Family Guy", episodes: familyGuy },
+    { name: "Futurama", episodes: futurama },
+    { name: "King of the Hill", episodes: kingOfTheHill },
+    { name: "Scrubs", episodes: scrubs },
+    { name: "The Simpsons", episodes: simpsons },
+    { name: "Modern Family", episodes: modernFamily },
+    { name: "8 Simple Rules", episodes: eightSimple },
+];
