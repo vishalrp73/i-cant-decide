@@ -1,6 +1,9 @@
+/**
+ * @deprecated use main.ts file instead
+ */
 import { exec } from "child_process";
-import inquirer from 'inquirer';
-import { getRandomNumber, randomiseEpisodes, fetchShows } from './tools/functions/index.js';
+import inquirer from "inquirer";
+import { getRandomNumber, randomiseEpisodes, fetchShows, } from "./tools/functions/index.js";
 const pickShow = (shows) => {
     const randomNumber = getRandomNumber(0, shows.length - 1);
     return shows[randomNumber];
@@ -17,11 +20,13 @@ const fetchRandomEpisode = (shows) => {
 };
 let stopLoop = false;
 const reRoll = (tvShows, episode) => {
-    inquirer.prompt({
-        type: 'confirm',
-        message: 'Re-roll?',
-        name: 'choice'
-    }).then(answers => {
+    inquirer
+        .prompt({
+        type: "confirm",
+        message: "Re-roll?",
+        name: "choice",
+    })
+        .then((answers) => {
         if (answers.choice) {
             prompt(tvShows);
         }
@@ -35,23 +40,23 @@ const reRoll = (tvShows, episode) => {
 const prompt = (tvShows) => {
     const episode = fetchRandomEpisode(tvShows);
     if (episode === null) {
-        console.log('No episode found');
+        console.log("No episode found");
         return;
     }
-    console.log('Chosen Episode:', episode);
+    console.log("Chosen Episode:", episode);
     if (!stopLoop) {
         reRoll(tvShows, episode);
     }
-    ;
     if (stopLoop) {
         const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
         exec(command);
     }
 };
-inquirer.prompt({
-    type: 'checkbox',
+inquirer
+    .prompt({
+    type: "checkbox",
     message: "Select TV Shows",
-    name: 'tv_shows',
+    name: "tv_shows",
     choices: [
         new inquirer.Separator("--- TV Shows ---"),
         { name: "American Dad" },
@@ -64,26 +69,26 @@ inquirer.prompt({
         { name: "Scrubs" },
         { name: "The Simpsons" },
         { name: "Modern Family" },
-        { name: "8 Simple Rules" }
-    ]
-}).then(answers => {
+        { name: "8 Simple Rules" },
+    ],
+})
+    .then((answers) => {
     const tvShows = answers.tv_shows;
     const episode = fetchRandomEpisode(tvShows);
     console.log("Chosen Episode:", episode);
     if (episode === null) {
-        console.log('No episode found');
+        console.log("No episode found");
         return;
     }
     if (!stopLoop) {
         reRoll(tvShows, episode);
     }
-    ;
     if (stopLoop) {
         const command = `open -a "Google Chrome" https://disneyplus.com/video/${episode.contentId}`;
         exec(command);
     }
-    ;
-}).catch(error => {
+})
+    .catch((error) => {
     if (error.isTtyError) {
         console.log("Prompt couldn't be rendered in the current environment");
     }

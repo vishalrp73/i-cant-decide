@@ -8,29 +8,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import inquirer from "inquirer";
-import { prompt } from "./tools/functions/index.js";
-let keepLoop = true;
-const showMap = [
-    { name: "American Dad" },
-    { name: "Bob's Burgers" },
-    { name: "The Cleveland Show" },
-    { name: "Family Guy" },
-    { name: "Futurama" },
-    { name: "It's Always Sunny in Philadelphia" },
-    { name: "King of the Hill" },
-    { name: "Scrubs" },
-    { name: "The Simpsons" },
-    { name: "Modern Family" },
-    { name: "8 Simple Rules" },
-];
-const main = () => __awaiter(void 0, void 0, void 0, function* () {
+import { command } from "./command.js";
+import { prompt } from "./prompt.js";
+export const rollDice = (tvShows, episode, keepLoop) => __awaiter(void 0, void 0, void 0, function* () {
     const answers = yield inquirer.prompt({
-        type: "checkbox",
-        message: "Select TV Shows",
-        name: "tv_shows",
-        choices: [new inquirer.Separator("--- TV Shows ---"), ...showMap],
+        type: "confirm",
+        message: "Re-roll?",
+        name: "choice",
     });
-    const { tv_shows } = answers;
-    prompt(tv_shows, keepLoop);
+    const { choice } = answers;
+    if (!choice) {
+        keepLoop = false;
+        command(episode);
+        return;
+    }
+    prompt(tvShows, keepLoop);
 });
-main();
